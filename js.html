@@ -1,0 +1,65 @@
+<script>
+
+function crearTablaContactos(){
+
+    let tabla = document.getElementById('tablaContactos')
+    //comprobar si tabla ya existe para evitar que se vea una nueva tabla a continuación de la primera
+    //siempre se creara una nueva tabla al pulsar el boton
+    if (tabla) tabla.remove()
+
+    google.script.run.withSuccessHandler(
+        function (obj){
+
+            tabla = document.createElement('table')
+            tabla.id = 'tablaContactos'
+            let tablaHeader = document.createElement('thead')
+            let tablaBody = document.createElement('tbody')
+
+            //Metodo for anidado
+            // for(let i = 0; i < obj.length; i++){
+            //     let fila = document.createElement('tr')
+            //     for(let j = 0; j < obj[i].length; j++){
+            //         let celda = document.createElement('td')
+            //         celda.textContent = obj[i][j]
+            //         fila.appendChild(celda)
+            //     }
+            //     if(i == 0){
+            //         tablaHeader.appendChild(fila)
+            //         tabla.appendChild(tablaHeader)
+            //     }
+            //     else{
+            //         tablaBody.appendChild(fila)
+            //     }
+            // }
+
+            //Metodo forEach
+            Array.from(obj).forEach((filaActual, i) => {
+                let fila = document.createElement('tr')
+                filaActual.forEach(celdaActual => {
+                    let celda = document.createElement('td')
+                    celda.textContent = celdaActual
+                    fila.appendChild(celda)
+                })
+                if(i == 0){
+                    tablaHeader.appendChild(fila)
+                    tabla.appendChild(tablaHeader)
+                }
+                else{
+                    tablaBody.appendChild(fila)
+                }
+                
+            })
+
+            //Agregar clases a la cabecera de la tabla
+            tablaHeader.classList.add('table-dark')
+            //Agregar cuerpo a la tabla
+            tabla.appendChild(tablaBody)
+            //Agregar clases a la tabla
+            tabla.classList.add('table', 'table-striped', 'border', 'border-3', 'table-success')
+            //Agregar tabla a la página
+            document.getElementById('divcontactos').appendChild(tabla)
+        }
+    ).obtenerContactos()
+}
+
+</script>
