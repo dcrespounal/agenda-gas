@@ -16,24 +16,29 @@ function crearTablaContactos(){
             let tablaBody = document.createElement('tbody')
 
             //Metodo for anidado
-            // for(let i = 0; i < obj.length; i++){
-            //     let fila = document.createElement('tr')
-            //     for(let j = 0; j < obj[i].length; j++){
-            //         let celda = document.createElement('td')
-            //         celda.textContent = obj[i][j]
-            //         fila.appendChild(celda)
-            //     }
-            //     if(i == 0){
-            //         tablaHeader.appendChild(fila)
-            //         tabla.appendChild(tablaHeader)
-            //     }
-            //     else{
-            //         tablaBody.appendChild(fila)
-            //     }
-            // }
+            //Header de la tabla
+            let primeraFila = document.createElement('tr')
+            for(let i = 0; i < obj[0].length; i++){
+                let celda = document.createElement('td')
+                celda.textContent = obj[0][i]
+                primeraFila.appendChild(celda)
+            }
+            tablaHeader.appendChild(primeraFila)
+            tabla.appendChild(tablaHeader)
+
+            //Cuerpo de la tabla, no analiza la primera fila
+            for(let i = 1; i < obj.length; i++){
+                let fila = document.createElement('tr')
+                for(let j = 0; j < obj[i].length; j++){
+                    let celda = document.createElement('td')
+                    celda.textContent = obj[i][j]
+                    fila.appendChild(celda)
+                }                
+                tablaBody.appendChild(fila)                
+            }
 
             //Metodo forEach
-            Array.from(obj).forEach((filaActual, i) => {
+            /* Array.from(obj).forEach((filaActual, i) => {
                 let fila = document.createElement('tr')
                 filaActual.forEach(celdaActual => {
                     let celda = document.createElement('td')
@@ -46,9 +51,8 @@ function crearTablaContactos(){
                 }
                 else{
                     tablaBody.appendChild(fila)
-                }
-                
-            })
+                }                
+            }) */
 
             //Agregar clases a la cabecera de la tabla
             tablaHeader.classList.add('table-dark')
