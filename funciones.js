@@ -1,5 +1,13 @@
+const HOJA = SpreadsheetApp.openById('1Q6ARghboL7E9ancmPeJkO3LyOrpzcWpqzs1Vq4P_mIo').getActiveSheet()
+
 function doGet(){
 
+    return HtmlService.createTemplateFromFile('web').evaluate().setTitle('Agenda con GAS')
+}
+
+function doPost(datos){
+
+    insertarContacto(datos.parameter.nombre, datos.parameter.correo)
     return HtmlService.createTemplateFromFile('web').evaluate().setTitle('Agenda con GAS')
 }
 
@@ -9,8 +17,13 @@ function obtenerDatosHTML(nombre){
 }
 
 function obtenerContactos(){
+    
+    return HOJA.getDataRange().getValues()
+}
 
-    let hoja = SpreadsheetApp.openById('1Q6ARghboL7E9ancmPeJkO3LyOrpzcWpqzs1Vq4P_mIo').getActiveSheet()
-    let datos = hoja.getDataRange().getValues()
-    return datos
+
+
+function insertarContacto(nombre, correo){
+    //añadir un vector con cada celda a añadir
+    HOJA.appendRow([nombre, correo])
 }

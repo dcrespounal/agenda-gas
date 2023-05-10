@@ -1,15 +1,32 @@
 <script>
 
-const NOTIFICACION_OK = 1
-const NOTIFICACION_DANGER = 2
-const NOTIFICACION_WARNING = 3
+function insertarContacto(){
+//Obtener datos
+let nombre = document.getElementById('nombre').value
+let correo = document.getElementById('correo').value
+google.script.run.withSuccessHandler(contactoInsertadoCorrectamente)
+.withFailureHandler(contactoInsertadoError)
+.insertarContacto(nombre, correo)
+}
+
+function contactoInsertadoCorrectamente(){
+    //Vaciar datos input
+    document.getElementById('nombre').value = ""
+    document.getElementById('correo').value = ""
+    //Mostrar notificaiones
+    crearNotificacionOK('Contacto creado correctamente', 'Contacto OK')
+}
+
+function contactoInsertadoError(){
+    crearIconoNotificaionError('No se ha podido insertar el contacto', 'Error')    
+}
 
 function crearTablaContactos(){
 
-    let tabla = document.getElementById('tablaContactos')
-    //comprobar si tabla ya existe para evitar que se vea una nueva tabla a continuación de la primera
-    //siempre se creara una nueva tabla al pulsar el boton
-    if (tabla) tabla.remove()
+    //Eliminar tabla primero, siempre
+    eliminarTabla()
+    //crear loader
+    crearLoader('divcontactos')
 
     google.script.run.withSuccessHandler(crearTablaContactosCorrectamente)
     .withFailureHandler(crearTablaContactosError)
@@ -71,11 +88,15 @@ function crearTablaContactosCorrectamente(obj){
     document.getElementById('divcontactos').appendChild(tabla)
     //Mostrar notificación satisfactoria
     crearNotificacionOK('Contactos obtenidos correctamente', 'Todo en orden')
+    //eliminar icono de carga Loader
+    eliminarLoader()
 }
 
 function crearTablaContactosError() {
     //mostrar notificación de error
     crearNotificacionError('No se han obtenido contactos', 'Ocurrio un problema')
+    eliminarLoader()
+
 }
 
 function crearNotificacion(mensaje, titulo) {
@@ -102,7 +123,6 @@ function crearNotificacionAdvertencia(mensaje, titulo){
     crearNotificacion(mensaje, titulo)
     crearNotificacionAdvertencia()
     crearColorNotificacion('--color-amarillo-oscuro')
-
 }
 
 function crearIconoNotificacionOK(){
@@ -158,6 +178,30 @@ function crearNotificacionOLD(tipo, mensaje, titulo) {
     }
     //mostrar notificacion
     notificacion.show();
+}
+
+function crearLoader(elementoPadre){
+    eliminarLoader()
+    let loader = document.createElement('div')
+    loader.id = 'loader'
+    loader.appendChild(document.createElement('div'))
+    loader.appendChild(document.createElement('div'))
+    loader.appendChild(document.createElement('div'))
+    loader.appendChild(document.createElement('div'))
+    loader.classList.add('lds-ring')
+    document.getElementById(elementoPadre).appendChild(loader)
+}
+
+function eliminarLoader(){
+    let loader = document.getElementById('loader')
+    if(loader) loader.remove()
+}
+
+function eliminarTabla(){
+    let tabla = document.getElementById('tablaContactos')
+    //comprobar si tabla ya existe para evitar que se vea una nueva tabla a continuación de la primera
+    //siempre se creara una nueva tabla al pulsar el boton
+    if (tabla) tabla.remove()
 }
 
 </script>

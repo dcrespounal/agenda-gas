@@ -1,15 +1,25 @@
 <main>
-    <p>Este es el main de la aplicación</p>
-    <div class="d-flex justify-content-center mb-4">
-        <button class="btn btn-success m-3" onclick="crearTablaContactos()">Mostrar contactos</button>
+    <!-- Formulario -->
+    <div class="d-flex justify-content-center my-3">   
+        <form onsubmit="insertarContacto()" method="dialog" id="formulario">
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Introduce nombre del contacto</label>
+                <input type="text" class="form-control" name="nombre" id="nombre">
+            </div>
+            <div class="mb-3">
+                <label for="correo" class="form-label">Introduce el correo del contacto</label>
+                <input type="email" class="form-control" name="correo" id="correo">
+            </div>
+            <!-- Botones -->
+            <button type="button" class="btn btn-success m-3" onclick="crearTablaContactos()">Mostrar contactos</button>
+            <button type="submit" class="btn btn-primary">Crear Contacto</button>
+        </form>        
     </div>
     <!-- Tabla de contactots -->
-    <div class="container-sm -mb-4 w-50" id="divcontactos">
+    <div class="container col-12 col-lg-6 -mb-4 d-flex justify-content-center" id="divcontactos">
 
     </div>
-
-    <!-- Notificaciones -->    
-
+    <!-- Notificaciones -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
         <!-- Toast -->
     <div id="notificacion" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -19,9 +29,7 @@
             <strong class="me-auto" id="tituloNotificacion"></strong>
             <button type="button" class="btn-close m-2" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-
-        <div class="toast-body" id="mensajeNotificacion">
-            
+        <div class="toast-body" id="mensajeNotificacion">            
         </div>
     </div>
     </div>
