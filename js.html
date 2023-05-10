@@ -4,6 +4,8 @@ function insertarContacto(){
 //Obtener datos
 let nombre = document.getElementById('nombre').value
 let correo = document.getElementById('correo').value
+eliminarTabla()
+crearLoader('divcontactos')
 google.script.run.withSuccessHandler(contactoInsertadoCorrectamente)
 .withFailureHandler(contactoInsertadoError)
 .insertarContacto(nombre, correo)
@@ -13,12 +15,17 @@ function contactoInsertadoCorrectamente(){
     //Vaciar datos input
     document.getElementById('nombre').value = ""
     document.getElementById('correo').value = ""
-    //Mostrar notificaiones
+    //Mostrar notificaciones
     crearNotificacionOK('Contacto creado correctamente', 'Contacto OK')
+    eliminarLoader()
+    crearTablaContactos()
 }
 
 function contactoInsertadoError(){
-    crearIconoNotificaionError('No se ha podido insertar el contacto', 'Error')    
+    crearNotificaionError('No se ha podido insertar el contacto', 'Error') 
+    eliminarLoader()
+    crearTablaContactos()
+
 }
 
 function crearTablaContactos(){

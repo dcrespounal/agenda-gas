@@ -6,8 +6,7 @@ function doGet(){
 }
 
 function doPost(datos){
-
-    insertarContacto(datos.parameter.nombre, datos.parameter.correo)
+    
     return HtmlService.createTemplateFromFile('web').evaluate().setTitle('Agenda con GAS')
 }
 
