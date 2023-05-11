@@ -43,7 +43,7 @@
                             </div>
                             <div class="col-6">
                                 <label for="apellido" class="form-label">Apellido del contacto</label>
-                                <input type="text" class="form-control" name="apellidos" id="apellidos" pattern="[^0-9]" title="No puede contener números" required>
+                                <input type="text" class="form-control" name="apellidos" id="apellidos" pattern="[\D]*" title="No puede contener números" required>
                             </div>
                         </div>
                         
@@ -51,7 +51,7 @@
                                 <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
                                 <input type="email" class="form-control me-4" name="correo" id="correo" required>                            
                                 <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
-                                <input type="tel" class="form-control" name="telefono" id="telefono" pattern="[\d]{10,12}" title="Debe contener entre 10 -12 caracteres" required>
+                                <input type="tel" class="form-control" name="telefono" id="telefono" pattern="[0-9]{10,12}" title="Debe contener entre 10 -12 caracteres" required>
                             </div>
                         
                     </div>

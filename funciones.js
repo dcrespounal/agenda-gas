@@ -26,3 +26,8 @@ function insertarContacto(nombre, apellidos, correo, telefono){
     //añadir un vector con cada celda a añadir
     HOJA.appendRow([nombre, apellidos, correo, telefono])
 }
+
+function borrarContacto(numeroFila){
+
+    HOJA.deleteRow(numeroFila)
+}
