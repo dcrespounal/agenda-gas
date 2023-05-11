@@ -28,7 +28,7 @@ function contactoInsertadoCorrectamente(){
 }
 
 function contactoInsertadoError(){
-    crearNotificaionError('No se ha podido insertar el contacto', 'Error') 
+    crearNotificacionError('No se ha podido insertar el contacto', 'Error') 
     eliminarLoader()
     crearTablaContactos()
 }
@@ -79,7 +79,8 @@ function crearTablaContactosCorrectamente(obj){
             fila.appendChild(celda)
         }
         //Agregar botones a la fila parametro i+1 para borrar fila correspondiente
-        fila.appendChild(crearCeldaBotones(i+1))
+        //Obtener datos de la fila actual(, obj[i])
+        fila.appendChild(crearCeldaBotones(i+1, obj[i]))
         tablaBody.appendChild(fila)                
     }
 
@@ -114,7 +115,7 @@ function crearTablaContactosCorrectamente(obj){
     eliminarLoader()
 }
 
-function crearCeldaBotones(numeroFila){
+function crearCeldaBotones(numeroFila, datosContacto){
 
     //Crear celda para botones en cada fila
     let celda = document.createElement('td')
@@ -131,18 +132,18 @@ function crearCeldaBotones(numeroFila){
     botonBorrar.appendChild(iconoBorrar)
 
     //Crear boton editar
-    let botonEditar = document.createElement('button')
-    //botonEditar.onclick = () => borrarContacto(numeroFila)
-    botonEditar.classList.add('btn', 'btn-warning', 'm-1')
-    //botonEditar.textContent = 'Editar'
+    let botonModificar = document.createElement('button')
+    botonModificar.onclick = () => abrirModalEditarContacto(numeroFila, datosContacto)
+    botonModificar.classList.add('btn', 'btn-warning', 'm-1')
+    //botonModificar.textContent = 'Editar'
     //Icono editar
-    let iconoEditar = document.createElement('i')
-    iconoEditar.classList.add('bi', 'bi-pencil-square')
-    botonEditar.appendChild(iconoEditar)
+    let iconoModificar = document.createElement('i')
+    iconoModificar.classList.add('bi', 'bi-pencil-square')
+    botonModificar.appendChild(iconoModificar)
 
     //Agregar botones a la celda
     celda.appendChild(botonBorrar)
-    celda.appendChild(botonEditar)
+    celda.appendChild(botonModificar)
 
     return celda
 }
@@ -156,6 +157,78 @@ function borrarContacto(numeroFila){
     .borrarContacto(numeroFila)
 }
 
+function abrirModalCrearContacto(){
+    //boton crear 
+    let boton = document.getElementById('botonCrearModificar')
+    boton.textContent = 'Crear contacto'
+    //Limpiar clases del boton para cambiarle color
+    boton.classList = ''
+    boton.classList.add('btn', 'btn-success')
+    //Cambiar titulo
+    document.getElementById('tituloModal').textContent = 'Crear Contacto'
+    //modificar submit
+    document.getElementById('formulario').onsubmit = () => insertarContacto()
+    //Obtener datos
+    document.getElementById('nombre').value = ''
+    document.getElementById('apellidos').value = ''
+    document.getElementById('correo').value = ''
+    document.getElementById('telefono').value = ''
+    //Abrir Modal
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).show()
+}
+
+function abrirModalEditarContacto(numeroFila, datosContacto){
+    //boton modificar
+    let boton = document.getElementById('botonCrearModificar')
+    boton.textContent = 'Modificar contacto'
+    //Limpiar clases del boton para cambiarle color
+    boton.classList = ''
+    boton.classList.add('btn', 'btn-warning')
+    //Cambiar titulo
+    document.getElementById('tituloModal').textContent = 'Editar Contacto'
+    //modificar submit
+    document.getElementById('formulario').onsubmit = () => modificarContacto(numeroFila)
+    //Obtener datos
+    document.getElementById('nombre').value = datosContacto[0]
+    document.getElementById('apellidos').value = datosContacto[1]
+    document.getElementById('correo').value = datosContacto[2]
+    document.getElementById('telefono').value = datosContacto[3]
+    //Abrir Modal
+    bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).show()
+}
+
+function modificarContacto(numeroFila){
+
+    //Cerrar modal
+    bootstrap.Modal.getInstance(document.getElementById('crearContactoModal')).hide()
+    //obtener nuevos DATOS a partir del formulario
+    let nombre = document.getElementById('nombre').value
+    let apellidos = document.getElementById('apellidos').value
+    let correo = document.getElementById('correo').value
+    let telefono = document.getElementById('telefono').value
+
+    eliminarTabla()
+    crearLoader('divcontactos')
+    google.script.run
+    .withSuccessHandler(contactoModificadoCorrectamente)
+    .withFailureHandler(contactoModificadoError)
+    .modificarContacto(numeroFila, {nombre, apellidos, correo, telefono})
+}
+
+function contactoModificadoCorrectamente(){
+    //Mostrar notificaciones
+    crearNotificacionOK('Contacto modificado correctamente', 'OK')
+    eliminarLoader()
+    crearTablaContactos()
+}
+
+function contactoModificadoError(){
+    //Mostrar notificaciones
+    crearNotificacionError('No se ha podido modificar el contacto', 'Error') 
+    eliminarLoader()
+    crearTablaContactos()
+}
+
 function contactoBorradoCorrectamente(){
     //Mostrar notificaciones
     crearNotificacionOK('Contacto borrado correctamente', 'OK')
@@ -165,7 +238,7 @@ function contactoBorradoCorrectamente(){
 
 function contactoBorradoError(){
     //Mostrar notificaciones
-    crearNotificaionError('No se ha podido Borrar el contacto', 'Error') 
+    crearNotificacionError('No se ha podido Borrar el contacto', 'Error') 
     eliminarLoader()
     crearTablaContactos()
 }
@@ -208,7 +281,7 @@ function crearIconoNotificacionOK(){
     document.getElementById('iconoNotificacion').classList.add('bi', 'bi-check2-square') 
 }
 
-function crearIconoNotificaionError(){
+function crearIconoNotificacionError(){
     document.getElementById('iconoNotificacion').className = ''
     document.getElementById('iconoNotificacion').classList.add('bi', 'bi-bug') 
 }

@@ -4,7 +4,7 @@
         <!-- Botones superiores-->
         <button type="button" class="btn btn-success m-2" onclick="crearTablaContactos()">Mostrar contactos</button>
         <!-- Boton activa modal -->
-        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#crearContactoModal">Nuevo Contacto</button>
+        <button type="button" class="btn btn-primary m-2" onclick="abrirModalCrearContacto()">Crear Contacto</button>
     </div>
     <!-- Tabla de contactots -->
     <div class="container col-12 col-lg-6 -mb-4 d-flex justify-content-center" id="divcontactos">
@@ -31,7 +31,7 @@
         <div class="modal-lg modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="tituloCrearContactoModal">Nuevo Contacto</h1>
+                    <h1 class="modal-title fs-5" id="tituloModal">Nuevo Contacto</h1>
                 </div>
                 <!-- Formulario -->
                 <form onsubmit="insertarContacto()" method="dialog" id="formulario">
@@ -45,19 +45,17 @@
                                 <label for="apellido" class="form-label">Apellido del contacto</label>
                                 <input type="text" class="form-control" name="apellidos" id="apellidos" pattern="[\D]*" title="No puede contener números" required>
                             </div>
-                        </div>
-                        
+                        </div>                        
                             <div class="input-group mb-3">
                                 <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
                                 <input type="email" class="form-control me-4" name="correo" id="correo" required>                            
                                 <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
                                 <input type="tel" class="form-control" name="telefono" id="telefono" pattern="[0-9]{10,12}" title="Debe contener entre 10 -12 caracteres" required>
-                            </div>
-                        
+                            </div>                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Crear contacto</button>
+                        <button id="botonCrearModificar" type="submit" class="btn btn-success">Crear contacto</button>                        
                     </div>
                 </form>
             </div>
