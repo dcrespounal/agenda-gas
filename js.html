@@ -3,7 +3,10 @@
 function insertarContacto(){
 //Obtener datos
 let nombre = document.getElementById('nombre').value
+let apellidos = document.getElementById('apellidos').value
 let correo = document.getElementById('correo').value
+let telefono = document.getElementById('telefono').value
+
 //Cerrar modal
 bootstrap.Modal.getInstance(document.getElementById('crearContactoModal')).hide()
 
@@ -11,7 +14,7 @@ eliminarTabla()
 crearLoader('divcontactos')
 google.script.run.withSuccessHandler(contactoInsertadoCorrectamente)
 .withFailureHandler(contactoInsertadoError)
-.insertarContacto(nombre, correo)
+.insertarContacto(nombre, apellidos, correo, telefono)
 }
 
 function contactoInsertadoCorrectamente(){
