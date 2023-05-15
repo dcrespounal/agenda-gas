@@ -22,7 +22,7 @@ function contactoInsertadoCorrectamente(){
     document.getElementById('nombre').value = ""
     document.getElementById('correo').value = ""
     //Mostrar notificaciones
-    crearNotificacionOK('Contacto creado correctamente', 'Contacto OK')
+    crearNotificacionContacto('Contacto creado correctamente', 'Contacto OK')
     eliminarLoader()
     crearTablaContactos()
 }
@@ -217,14 +217,14 @@ function modificarContacto(numeroFila){
 
 function contactoModificadoCorrectamente(){
     //Mostrar notificaciones
-    crearNotificacionOK('Contacto modificado correctamente', 'OK')
+    crearNotificacionContacto('Contacto modificado correctamente', 'OK')
     eliminarLoader()
     crearTablaContactos()
 }
 
 function contactoModificadoError(){
     //Mostrar notificaciones
-    crearNotificacionError('No se ha podido modificar el contacto', 'Error') 
+    crearNotificacionContacto('No se ha podido modificar el contacto', 'Error') 
     eliminarLoader()
     crearTablaContactos()
 }
@@ -250,53 +250,53 @@ function crearTablaContactosError() {
 
 }
 
-function crearNotificacion(mensaje, titulo) {
+/* function crearNotificacion(mensaje, titulo) {
 
     document.getElementById('mensajeNotificacion').textContent = mensaje
     document.getElementById('tituloNotificacion').textContent = titulo
     let elementoNotificacion = document.getElementById('notificacion')
     bootstrap.Toast.getOrCreateInstance(elementoNotificacion).show()
-}
+} */
 
-function crearNotificacionOK(mensaje, titulo){
+/* function crearNotificacionOK(mensaje, titulo){
     crearNotificacion(mensaje, titulo)
     crearIconoNotificacionOK()
     crearColorNotificacion('--color-verde-oscuro')
-}
+} */
 
-function crearNotificacionError(mensaje, titulo){
+/* function crearNotificacionError(mensaje, titulo){
     crearNotificacion(mensaje, titulo)
     crearIconoNotificacionError()
     crearColorNotificacion('--color-rojo-oscuro')
-}
+} */
 
-function crearNotificacionAdvertencia(mensaje, titulo){
+/* function crearNotificacionAdvertencia(mensaje, titulo){
     crearNotificacion(mensaje, titulo)
     crearNotificacionAdvertencia()
     crearColorNotificacion('--color-amarillo-oscuro')
-}
+} */
 
-function crearIconoNotificacionOK(){
+/* function crearIconoNotificacionOK(){
     document.getElementById('iconoNotificacion').className = ''
     document.getElementById('iconoNotificacion').classList.add('bi', 'bi-check2-square') 
-}
+} */
 
-function crearIconoNotificacionError(){
+/* function crearIconoNotificacionError(){
     document.getElementById('iconoNotificacion').className = ''
     document.getElementById('iconoNotificacion').classList.add('bi', 'bi-bug') 
-}
+} */
 
-function crearIconoNotificaionAdvertencia(){
+/* function crearIconoNotificaionAdvertencia(){
     document.getElementById('iconoNotificacion').className = ''
     document.getElementById('iconoNotificacion').classList.add('bi', 'bi-exclamation-square')
-}
+} */
 
-function crearColorNotificacion(color){
+/* function crearColorNotificacion(color){
     let elementoNotificacion = document.getElementById('notificacion')
     elementoNotificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(color)
-}
+} */
 
-function crearNotificacionOLD(tipo, mensaje, titulo) {
+/* function crearNotificacionOLD(tipo, mensaje, titulo) {
     //obtener datos notificacion
     let mensajeNotificacion = document.getElementById('mensajeNotificacion')
     let tituloNotificacion = document.getElementById('tituloNotificacion')
@@ -329,6 +329,107 @@ function crearNotificacionOLD(tipo, mensaje, titulo) {
     }
     //mostrar notificacion
     notificacion.show();
+} */
+
+//Notificaciones
+
+const ICONO_CHECK = 'bi-check2-square'
+const ICONO_PAPELERA = 'bi-trash'
+const ICONO_CONTACTO = 'bi-person-plus-fill'
+const ICONO_ERROR = 'bi-bug'
+const ICONO_PELIGRO =  'bi-exclamation-square'
+
+function crearNotificacionOK(mensaje, titulo){
+
+    crearNotificacion(titulo, mensaje, ICONO_CHECK, '--color-verde-oscuro')
+}
+
+function crearNotificacionError(mensaje, titulo){
+
+    crearNotificacion(titulo, mensaje, ICONO_ERROR, '--color-rojo-oscuro')
+}
+
+function crearNotificacionContacto(mensaje, titulo){
+
+    crearNotificacion(titulo, mensaje, ICONO_CONTACTO, '--color-azul-oscuro')
+}
+
+function crearNotificacionAdvertencia(mensaje, titulo){
+
+    crearNotificacion(titulo, mensaje, ICONO_PELIGRO, '--color-amarillo-oscuro')
+}
+
+function crearNotificacionBorrar(mensaje, titulo){
+
+crearNotificacion(titulo, mensaje, ICONO_PAPELERA, '--color-gris-oscuro')
+}
+
+
+function crearNotificacion(titulo,  mensaje, icono, color){
+
+    let notificacion = crearAtributosNotificacion()
+    let cabeceraNotificacion = crearCabeceraNotificacion(titulo, icono)
+    let cuerpoNotificacion = crearCuerpoNotificacion(mensaje)
+
+    //Agregar cabecera y cuerpo
+    notificacion.appendChild(cabeceraNotificacion)
+    notificacion.appendChild(cuerpoNotificacion)
+
+    //Establecer color de la notificación
+    notificacion.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(color)
+    //Evento
+    notificacion.addEventListener('hidden.bs.toast', function () {this.remove()})
+    //Agregar al contenedor de notificaciones
+    document.getElementById('contenedorNotificaciones').appendChild(notificacion)
+    //Instanciar y mostrar
+    bootstrap.Toast.getOrCreateInstance(notificacion).show()
+}
+
+
+
+function crearCuerpoNotificacion(mensaje){
+
+    let cuerpoNotificacion = document.createElement('div')
+    cuerpoNotificacion.classList.add('toast-body')
+    cuerpoNotificacion.textContent = mensaje
+    return cuerpoNotificacion
+}
+
+function crearCabeceraNotificacion(titulo, icono){
+    //Crear cabecera
+    let cabeceraNotificacion = document.createElement('div')
+    cabeceraNotificacion.classList.add('toast-header', 'p-0')
+    
+    //Crear icono, pasandole el contenedor
+    crearIconoNotificacion(cabeceraNotificacion, icono)
+
+    //Crear titulo
+    let tituloNotificacion = document.createElement('strong')
+    tituloNotificacion.classList.add('mx-2')
+    tituloNotificacion.textContent = titulo
+
+    cabeceraNotificacion.appendChild(tituloNotificacion)
+    return cabeceraNotificacion
+}
+
+function crearIconoNotificacion(contenedor, icono){
+
+let divIcono = document.createElement('div')
+let iconoNotificacion = document.createElement('i')  
+divIcono.classList.add('icono-notificacion')
+iconoNotificacion.classList.add('bi', icono)
+divIcono.appendChild(iconoNotificacion)
+contenedor.appendChild(divIcono)
+}
+
+function crearAtributosNotificacion(){
+
+    let notificacion = document.createElement('div')
+    notificacion.classList.add('toast', 'align-items-center', 'text-white', 'border-0')
+    notificacion.setAttribute('role','alert')
+    notificacion.setAttribute('aria-live', 'assertive')
+    notificacion.setAttribute('aria-atomic', 'true')
+    return notificacion
 }
 
 function crearLoader(elementoPadre){
