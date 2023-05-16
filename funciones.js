@@ -37,3 +37,22 @@ function modificarContacto(numeroFila, datos){
     let celdas = HOJA.getRange('A'+numeroFila+':D'+numeroFila)
     celdas.setValues([[datos.nombre, datos.apellidos, datos.correo, datos.telefono]])
 }
+
+//Importar contactos desde API externa
+function importarContactos(){
+
+    let url = 'https://randomuser.me/api/?results=5&inc=name,email,phone'
+    let respuesta = UrlFetchApp.fetch(url).getContentText()
+    //Logger.log(respuesta)
+    //*Convertir respuesta (String) a Json
+    let datos = JSON.parse(respuesta)
+    //datos.results.forEach(contacto => {Logger.log(contacto)});
+    datos.results.forEach(insertarContactoJSON);
+}
+
+function insertarContactoJSON(contacto){
+
+    HOJA.appendRow([contacto.name.first, contacto.name.last, contacto.email, contacto.phone])
+}
+
+
