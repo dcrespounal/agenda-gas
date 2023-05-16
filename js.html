@@ -77,6 +77,17 @@ function crearTablaContactosCorrectamente(obj){
             let celda = document.createElement('td')
             celda.textContent = obj[i][j]
             fila.appendChild(celda)
+
+            //Si es el quinto elemento de la fila (corresponde al campo imagen URL)
+            if(j == 4){
+                //limpiar contenido para que no aparezca la imagen y la dirección
+                celda.textContent = ''
+                //Crear la imagen
+                let imagen = document.createElement('img')
+                imagen.classList.add('img-fluid', 'rounded')
+                imagen.src = obj[i][j]
+                celda.appendChild(imagen)
+            }
         }
         //Agregar botones a la fila parametro i+1 para borrar fila correspondiente
         //Obtener datos de la fila actual(, obj[i])
