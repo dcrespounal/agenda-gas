@@ -1,0 +1,137 @@
+<script>
+
+function eliminarTabla(){
+    let tabla = document.getElementById('tablaContactos')
+    //comprobar si tabla ya existe para evitar que se vea una nueva tabla a continuación de la primera
+    //siempre se creara una nueva tabla al pulsar el boton
+    if (tabla) tabla.remove()
+}
+
+function crearTablaContactos(){
+
+    limpiar()
+    google.script.run
+        .withSuccessHandler(crearTablaContactosCorrectamente)
+        .withFailureHandler(crearTablaContactosError)
+        .obtenerContactos()
+}
+
+function crearTablaContactosCorrectamente(obj){
+
+    tabla = document.createElement('table')
+    tabla.id = 'tablaContactos'
+    let tablaHeader = document.createElement('thead')
+    let tablaBody = document.createElement('tbody')
+    //Metodo for anidado
+    //Header de la tabla
+    let primeraFila = document.createElement('tr')
+    for(let i = 0; i < obj[0].length; i++){
+        let celda = document.createElement('td')
+        celda.textContent = obj[0][i]
+        primeraFila.appendChild(celda)
+    }
+    //Agregar columna OPCIONES
+    let celdaOpciones = document.createElement('td')
+    celdaOpciones.classList.add('text-center')
+    celdaOpciones.textContent = 'OPCIONES'
+    primeraFila.appendChild(celdaOpciones)
+
+    //Agregar la fila al header de la tabla
+    tablaHeader.appendChild(primeraFila)
+    tabla.appendChild(tablaHeader)
+
+    //Cuerpo de la tabla, no analiza la primera fila
+    for(let i = 1; i < obj.length; i++){
+        let fila = document.createElement('tr')
+        for(let j = 0; j < obj[i].length; j++){
+            let celda = document.createElement('td')
+            celda.textContent = obj[i][j]
+            fila.appendChild(celda)
+
+            //Si es el quinto elemento de la fila (corresponde al campo imagen URL)
+            if(j == 4){
+                //limpiar contenido para que no aparezca la imagen y la dirección
+                celda.textContent = ''
+                //Crear la imagen
+                let imagen = document.createElement('img')
+                imagen.classList.add('img-fluid', 'rounded')
+                imagen.src = obj[i][j]
+                celda.appendChild(imagen)
+            }
+        }
+        //Agregar botones a la fila parametro i+1 para borrar fila correspondiente
+        //Obtener datos de la fila actual(, obj[i])
+        fila.appendChild(crearCeldaBotones(i+1, obj[i]))
+        tablaBody.appendChild(fila)                
+    }    
+    //Metodo forEach
+    /* Array.from(obj).forEach((filaActual, i) => {
+        let fila = document.createElement('tr')
+        filaActual.forEach(celdaActual => {
+            let celda = document.createElement('td')
+            celda.textContent = celdaActual
+            fila.appendChild(celda)
+        })
+        if(i == 0){
+            tablaHeader.appendChild(fila)
+            tabla.appendChild(tablaHeader)
+        }
+        else{
+            tablaBody.appendChild(fila)
+        }                
+    }) */
+
+    //Agregar clases a la cabecera de la tabla
+    tablaHeader.classList.add('table-dark')
+    //Agregar cuerpo a la tabla
+    tabla.appendChild(tablaBody)
+    //Agregar clases a la tabla
+    tabla.classList.add('table', 'table-striped', 'border', 'border-4', 'border-dark','table-success')
+    //Agregar tabla a la página
+    document.getElementById('divcontactos').appendChild(tabla)
+    //Mostrar notificación satisfactoria
+    crearNotificacionOK('Contactos obtenidos correctamente', 'Todo en orden')
+    //eliminar icono de carga Loader
+    eliminarLoader()
+}
+
+function crearTablaContactosError() {
+    //mostrar notificación de error
+    crearNotificacionError('No se han obtenido contactos', 'Ocurrio un problema')
+    eliminarLoader()
+}
+
+function crearCeldaBotones(numeroFila, datosContacto){
+
+    //Crear celda para botones en cada fila
+    let celda = document.createElement('td')
+    celda.classList.add('text-center')
+
+    //Crear boton borrar
+    let botonBorrar = document.createElement('button')
+    botonBorrar.onclick = () => borrarContacto(numeroFila)
+    botonBorrar.classList.add('btn', 'btn-danger', 'm-1')
+    //botonBorrar.textContent = 'Borrar'
+    //Icono borrar
+    let iconoBorrar = document.createElement('i')
+    iconoBorrar.classList.add('bi', 'bi-trash')
+    botonBorrar.appendChild(iconoBorrar)
+
+    //Crear boton editar
+    let botonModificar = document.createElement('button')
+    botonModificar.onclick = () => abrirModalEditarContacto(numeroFila, datosContacto)
+    botonModificar.classList.add('btn', 'btn-warning', 'm-1')
+    //botonModificar.textContent = 'Editar'
+    //Icono editar
+    let iconoModificar = document.createElement('i')
+    iconoModificar.classList.add('bi', 'bi-pencil-square')
+    botonModificar.appendChild(iconoModificar)
+
+    //Agregar botones a la celda
+    celda.appendChild(botonBorrar)
+    celda.appendChild(botonModificar)
+
+    return celda
+}
+
+</script>

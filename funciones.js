@@ -20,8 +20,6 @@ function obtenerContactos(){
     return HOJA.getDataRange().getValues()
 }
 
-
-
 function insertarContacto(nombre, apellidos, correo, telefono){
     //añadir un vector con cada celda a añadir
     HOJA.appendRow([nombre, apellidos, correo, telefono])
@@ -37,7 +35,6 @@ function modificarContacto(numeroFila, datos){
     let celdas = HOJA.getRange('A'+numeroFila+':D'+numeroFila)
     celdas.setValues([[datos.nombre, datos.apellidos, datos.correo, datos.telefono]])
 }
-
 //Importar contactos desde API externa
 function importarContactos(){
 
@@ -52,7 +49,7 @@ function importarContactos(){
 
 function insertarContactoJSON(contacto){
 
-    HOJA.appendRow([contacto.name.first, contacto.name.last, contacto.email, contacto.phone, contacto.picture.medium])
+    HOJA.appendRow([contacto.name.first, contacto.name.last, contacto.email, contacto.phone, contacto.picture.large])
 }
 
 
