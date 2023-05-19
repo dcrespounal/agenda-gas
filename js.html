@@ -23,23 +23,66 @@ if(this.window.scrollY < 500){
     document.getElementById('botonSubir').style.transform = "scale(0)"
 }
 })
+function subirArriba() {
+
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+}
+
+//Cargar Imagen
+document.getElementById('imagen').addEventListener("change", function(){
+    document.getElementById('imgForm').src = URL.createObjectURL(this.files[0])
+})
+
 //INSERTAR CONTACTO
 function insertarContacto(){
-    //Obtener datos
+    
     limpiar()
-    let nombre = document.getElementById('nombre').value
-    let apellidos = document.getElementById('apellidos').value
-    let correo = document.getElementById('correo').value
-    let telefono = document.getElementById('telefono').value
-
     //Cerrar modal
     bootstrap.Modal.getInstance(document.getElementById('crearContactoModal')).hide()
-
-    crearLoader('divcontactos')
-    google.script.run.withSuccessHandler(contactoInsertadoCorrectamente)
+    let contacto = guardarDatosContacto()
+    let archivo = document.getElementById('imagen').files[0]
+    //Si hay archivo guardado
+    if(archivo) subirImagen(contacto, archivo)
+    else{
+        google.script.run
+        .withSuccessHandler(contactoInsertadoCorrectamente)
         .withFailureHandler(contactoInsertadoError)
-        .insertarContacto(nombre, apellidos, correo, telefono)
+        .insertarContacto(contacto)
+    }    
 }
+
+function subirImagen(contacto, archivo){
+
+    let fileReader = new FileReader()
+    fileReader.readAsArrayBuffer(archivo)
+    fileReader.onload = function(){
+        let imagen = {
+            nombre: archivo.name,
+            tipo: archivo.type,
+            datos: Array.from(new Int8Array(this.result))
+
+        }
+        google.script.run
+        .withSuccessHandler(contactoInsertadoCorrectamente)
+        .withFailureHandler(contactoInsertadoError)
+        .insertarContacto(contacto, imagen)
+    }
+}
+
+function guardarDatosContacto(){
+    //Obtener datos
+    let contacto = {
+        nombre : document.getElementById('nombre').value,
+        apellidos : document.getElementById('apellidos').value,
+        correo : document.getElementById('correo').value,
+        telefono : document.getElementById('telefono').value,
+        imagen : document.getElementById('imgForm').src
+    }
+    return contacto
+}
+
+
 
 function contactoInsertadoCorrectamente(){
     //Vaciar datos input
@@ -134,12 +177,6 @@ function contactosImportadosError(){
     crearNotificacionError('No se han podido importar contactos', 'Error') 
     mostrar()
     //crearTablaContactos()
-}
-
-function subirArriba() {
-
-    document.body.scrollTop = 0
-    document.documentElement.scrollTop = 0
 }
 
 function mostrarInformacionAdicionalContacto(tarjeta){

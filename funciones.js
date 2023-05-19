@@ -1,4 +1,6 @@
 const HOJA = SpreadsheetApp.openById('1Q6ARghboL7E9ancmPeJkO3LyOrpzcWpqzs1Vq4P_mIo').getActiveSheet()
+const CARPETA = DriveApp.getFolderById('1LjZrKUjTZQ087oqeK6860nhpTlBwcZ8T')
+const CABECERA_URL_IMAGEN_DRIVE = 'https://drive.google.com/uc?export=view&id='
 
 function doGet(){
 
@@ -20,9 +22,15 @@ function obtenerContactos(){
     return HOJA.getDataRange().getValues()
 }
 
-function insertarContacto(nombre, apellidos, correo, telefono){
+function insertarContacto(contacto, imagen){
+    //Si se recibe una imagen
+    if(imagen){
+        let blob = Utilities.newBlob(imagen.datos, imagen.tipo, imagen.nombre)
+        let archivo = CARPETA.createFile(blob)
+        contacto.imagen = CABECERA_URL_IMAGEN_DRIVE+archivo.getId()
+    }
     //añadir un vector con cada celda a añadir
-    HOJA.appendRow([nombre, apellidos, correo, telefono])
+    HOJA.appendRow([contacto.nombre, contacto.apellidos, contacto.correo, contacto.telefono, contacto.imagen])
 }
 
 function borrarContacto(numeroFila){

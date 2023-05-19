@@ -46,21 +46,38 @@
                 <form onsubmit="insertarContacto()" method="dialog" id="formulario">
                     <div class="modal-body">
                         <div class="row mb-3">
-                            <div class="col-6">
-                                <label for="nombre" class="form-label">Nombre del contacto</label>
-                                <input type="text" class="form-control" name="nombre" id="nombre"  pattern="[\D]*" title="No puede contener números" required>
+                            <!-- Parte Izquierda formulario -->
+                            <div class="col-6 d-flex flex-column">
+                                <div class="mb-2">
+                                    <label for="nombre" class="form-label">Nombre del contacto</label>
+                                    <input type="text" class="form-control" name="nombre" id="nombre"  pattern="[\D]*" title="No puede contener números" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="apellido" class="form-label">Apellido del contacto</label>
+                                    <input type="text" class="form-control" name="apellidos" id="apellidos" pattern="[\D]*" title="No puede contener números" required>
+                                </div>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                                    <input type="email" class="form-control" name="correo" id="correo" required>                                    
+                                </div>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
+                                    <input type="tel" class="form-control" name="telefono" id="telefono" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="imagen" class="form-label">Seleccionar imagen contacto</label>
+                                    <input type="file" accept="imagen/*" id="imagen" class="form-control" name="imagen">
+                                </div>
                             </div>
-                            <div class="col-6">
-                                <label for="apellido" class="form-label">Apellido del contacto</label>
-                                <input type="text" class="form-control" name="apellidos" id="apellidos" pattern="[\D]*" title="No puede contener números" required>
+                            <!-- Parte Derecha formulario -->
+                            <div class="col-6 d-flex justify-content-center align-items-center p-0">
+                                <img class="img-fluid img-form" id="imgForm" alt="Imagen de contacto" >
+
+                                
                             </div>
-                        </div>                        
-                            <div class="input-group mb-3">
-                                <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
-                                <input type="email" class="form-control me-4" name="correo" id="correo" required>                            
-                                <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
-                                <input type="tel" class="form-control" name="telefono" id="telefono" pattern="[0-9\(\)/\- ]{0-20}" title="Debe contener entre 10 -12 caracteres" required>
-                            </div>                        
+
+
+                                                  
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
