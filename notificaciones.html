@@ -1,19 +1,5 @@
 <script>
 
-//Notificaciones
-const ICONO_CHECK = 'bi-check2-square'
-const ICONO_PAPELERA = 'bi-trash'
-const ICONO_CONTACTO = 'bi-person-plus-fill'
-const ICONO_ERROR = 'bi-bug'
-const ICONO_PELIGRO =  'bi-exclamation-square'
-
-const LOTTIE_CHECK = 'https://assets3.lottiefiles.com/packages/lf20_niyfyoqs.json'
-const LOTTIE_PAPELERA = 'https://assets7.lottiefiles.com/packages/lf20_WcyRdM.json'
-const LOTTIE_CONTACTO = 'https://assets3.lottiefiles.com/packages/lf20_o9df1rnx.json'
-const LOTTIE_ERROR = 'https://assets10.lottiefiles.com/packages/lf20_e1pmabgl.json'
-const LOTTIE_PELIGRO = 'https://assets7.lottiefiles.com/packages/lf20_tk0uford.json'
-
-
 function crearNotificacionOK(mensaje, titulo){
 
     crearNotificacion(titulo, mensaje, LOTTIE_CHECK, '--color-verde-oscuro')
@@ -111,9 +97,6 @@ function crearLottieNotificacion(contenedor, lottie){
 
     divIcono.appendChild(iconoNotificacion)
     contenedor.appendChild(divIcono)
-
-
-
 }
 
 function crearAtributosNotificacion(){

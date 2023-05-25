@@ -1,16 +1,25 @@
 <script>
 
+//Notificaciones
+const ICONO_CHECK = 'bi-check2-square'
+const ICONO_PAPELERA = 'bi-trash'
+const ICONO_CONTACTO = 'bi-person-plus-fill'
+const ICONO_ERROR = 'bi-bug'
+const ICONO_PELIGRO =  'bi-exclamation-square'
+
+const LOTTIE_CHECK = 'https://assets3.lottiefiles.com/packages/lf20_niyfyoqs.json'
+const LOTTIE_PAPELERA = 'https://assets7.lottiefiles.com/packages/lf20_WcyRdM.json'
+const LOTTIE_CONTACTO = 'https://assets3.lottiefiles.com/packages/lf20_o9df1rnx.json'
+const LOTTIE_ERROR = 'https://assets10.lottiefiles.com/packages/lf20_e1pmabgl.json'
+const LOTTIE_PELIGRO = 'https://assets7.lottiefiles.com/packages/lf20_tk0uford.json'
+const LOTTIE_LOADER_NUBE = 'https://assets2.lottiefiles.com/packages/lf20_x62chJ.json'
+
 function limpiar(){
 
-    eliminarTabla()
-    eliminarTarjetas()
-    crearLoader('divcontactos')
-}
-
-function mostrar(){
-
-    crearTarjetaContactos()
-    eliminarLoader()
+eliminarTabla()
+eliminarTarjetas()
+//crearLoader('divcontactos')
+crearLoaderLottie('divcontactos', LOTTIE_LOADER_NUBE)
 }
 
 //Boton subir
@@ -33,6 +42,14 @@ function subirArriba() {
 document.getElementById('imagen').addEventListener("change", function(){
     document.getElementById('imgForm').src = URL.createObjectURL(this.files[0])
 })
+
+
+
+function mostrar(){
+
+    crearTarjetaContactos()
+    eliminarLoader()
+}
 
 //INSERTAR CONTACTO
 function insertarContacto(){
