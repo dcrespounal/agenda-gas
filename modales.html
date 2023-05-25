@@ -24,7 +24,7 @@
         bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).show()
     }
 
-    function abrirModalEditarContacto(numeroFila, datosContacto) {
+    function abrirModalEditarContacto(contacto) {
         //boton modificar
         let boton = document.getElementById('botonCrearModificar')
         boton.textContent = 'Modificar contacto'
@@ -34,34 +34,15 @@
         //Cambiar titulo
         document.getElementById('tituloModal').textContent = 'Editar Contacto'
         //modificar submit
-        document.getElementById('formulario').onsubmit = () => modificarContacto(numeroFila)
+        document.getElementById('formulario').onsubmit = () => modificarContacto(contacto.fila)
         //Obtener datos
-        document.getElementById('nombre').value = datosContacto[0]
-        document.getElementById('apellidos').value = datosContacto[1]
-        document.getElementById('correo').value = datosContacto[2]
-        document.getElementById('telefono').value = datosContacto[3]
+        document.getElementById('nombre').value = contacto.nombre
+        document.getElementById('apellidos').value = contacto.apellidos
+        document.getElementById('correo').value = contacto.correo
+        document.getElementById('telefono').value = contacto.telefono
+        document.getElementById('imgForm').src = contacto.imagen
         //Abrir Modal
         bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).show()
-    }
-
-    function abrirModalEditarContactoconTarjeta(numeroFila, datosContacto) {
-        //boton modificar
-        let boton = document.getElementById('botonCrearModificar')
-        boton.textContent = 'Modificar contacto'
-        //Limpiar clases del boton para cambiarle color
-        boton.classList = ''
-        boton.classList.add('btn', 'btn-warning')
-        //Cambiar titulo
-        document.getElementById('tituloModal').textContent = 'Editar Contacto'
-        //modificar submit
-        document.getElementById('formulario').onsubmit = () => modificarContacto(numeroFila)
-        //Obtener datos
-        document.getElementById('nombre').value = datosContacto.nombre
-        document.getElementById('apellidos').value = datosContacto.apellidos
-        document.getElementById('correo').value = datosContacto.correo
-        document.getElementById('telefono').value = datosContacto.telefono
-        //Abrir Modal
-        bootstrap.Modal.getOrCreateInstance(document.getElementById('crearContactoModal')).show()
-    }
+    }    
 
 </script>

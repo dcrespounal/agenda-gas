@@ -1,5 +1,32 @@
 <script>
 
+function extraerContactos(datos){
+
+    let contactos = []
+    for(let i = 1; i < datos.length; i++){
+        let contacto = {
+            nombre : datos[i][0],
+            apellidos : datos[i][1],
+            correo : datos[i][2],
+            telefono : datos[i][3],
+            imagen : datos[i][4],
+            fila : i+1
+        }
+        contactos.push(contacto)
+    }
+    return contactos
+}
+
+function extraerColumnas(datos){
+
+    let columnas = []
+    for(let i = 0; i < datos[0].length; i++){
+        columnas.push(datos[0][i])
+    }
+    columnas.push('OPCIONES')
+    return columnas
+}
+
 function eliminarTabla(){
     let tabla = document.getElementById('tablaContactos')
     //comprobar si tabla ya existe para evitar que se vea una nueva tabla a continuación de la primera
@@ -13,57 +40,35 @@ function crearTablaContactos(){
     google.script.run
         .withSuccessHandler(crearTablaContactosCorrectamente)
         .withFailureHandler(crearTablaContactosError)
-        .obtenerContactos()
+        .obtenerDatos()
 }
 
-function crearTablaContactosCorrectamente(obj){
+function crearTablaContactosCorrectamente(datos){
 
+    //Extraer contactos y columnas
+    let contactos = extraerContactos(datos)
+    let columnas = extraerColumnas(datos)
+    
+    //Crear tabla
     tabla = document.createElement('table')
     tabla.id = 'tablaContactos'
-    let tablaHeader = document.createElement('thead')
-    let tablaBody = document.createElement('tbody')
-    //Metodo for anidado
-    //Header de la tabla
-    let primeraFila = document.createElement('tr')
-    for(let i = 0; i < obj[0].length; i++){
-        let celda = document.createElement('td')
-        celda.textContent = obj[0][i]
-        primeraFila.appendChild(celda)
-    }
-    //Agregar columna OPCIONES
-    let celdaOpciones = document.createElement('td')
-    celdaOpciones.classList.add('text-center')
-    celdaOpciones.textContent = 'OPCIONES'
-    primeraFila.appendChild(celdaOpciones)
 
-    //Agregar la fila al header de la tabla
-    tablaHeader.appendChild(primeraFila)
-    tabla.appendChild(tablaHeader)
+    //Crear Header y agregar a la tabla
+    tabla.appendChild(crearHeaderTabla(columnas))
 
-    //Cuerpo de la tabla, no analiza la primera fila
-    for(let i = 1; i < obj.length; i++){
-        let fila = document.createElement('tr')
-        for(let j = 0; j < obj[i].length; j++){
-            let celda = document.createElement('td')
-            celda.textContent = obj[i][j]
-            fila.appendChild(celda)
+    //Crear Body y agregar a la tabla
+    tabla.appendChild(crearBodyTabla(contactos))
 
-            //Si es el quinto elemento de la fila (corresponde al campo imagen URL)
-            if(j == 4){
-                //limpiar contenido para que no aparezca la imagen y la dirección
-                celda.textContent = ''
-                //Crear la imagen
-                let imagen = document.createElement('img')
-                imagen.classList.add('img-fluid', 'rounded', 'img-tabla')
-                imagen.src = obj[i][j]
-                celda.appendChild(imagen)
-            }
-        }
-        //Agregar botones a la fila parametro i+1 para borrar fila correspondiente
-        //Obtener datos de la fila actual(, obj[i])
-        fila.appendChild(crearCeldaBotones(i+1, obj[i]))
-        tablaBody.appendChild(fila)                
-    }    
+    //Estilo de la tabla
+    tabla.classList.add('table', 'table-striped', 'border', 'border-4', 'border-dark','table-success')
+
+    //Agregar a la web
+    document.getElementById('divcontactos').appendChild(tabla)
+    //Mostrar notificación satisfactoria
+    crearNotificacionOK('Contactos obtenidos correctamente', 'Todo en orden')
+    //eliminar icono de carga Loader
+    eliminarLoader()
+           
     //Metodo forEach
     /* Array.from(obj).forEach((filaActual, i) => {
         let fila = document.createElement('tr')
@@ -81,18 +86,9 @@ function crearTablaContactosCorrectamente(obj){
         }                
     }) */
 
-    //Agregar clases a la cabecera de la tabla
-    tablaHeader.classList.add('table-dark')
-    //Agregar cuerpo a la tabla
-    tabla.appendChild(tablaBody)
     //Agregar clases a la tabla
-    tabla.classList.add('table', 'table-striped', 'border', 'border-4', 'border-dark','table-success')
-    //Agregar tabla a la página
-    document.getElementById('divcontactos').appendChild(tabla)
-    //Mostrar notificación satisfactoria
-    crearNotificacionOK('Contactos obtenidos correctamente', 'Todo en orden')
-    //eliminar icono de carga Loader
-    eliminarLoader()
+    
+    //Agregar tabla a la página    
 }
 
 function crearTablaContactosError() {
@@ -101,35 +97,66 @@ function crearTablaContactosError() {
     eliminarLoader()
 }
 
-function crearCeldaBotones(numeroFila, datosContacto){
+function crearHeaderTabla(columnas){
+    let tablaHeader = document.createElement('thead')    
+    tablaHeader.classList.add('table-dark')
+    //Crear fila Header de la tabla
+    let primeraFila = document.createElement('tr')
+    //Agregar columnas
+    columnas.forEach(columna => {        
+        let celda = document.createElement('td')
+        celda.textContent = columna
+        primeraFila.appendChild(celda)    
+    });
+    //Agregar fila al Header
+    tablaHeader.appendChild(primeraFila)
+
+    return tablaHeader
+}
+
+function crearBodyTabla(contactos){
+    let tablaBody = document.createElement('tbody')
+    contactos.forEach(contacto => {
+        let fila = document.createElement('tr')        
+        //Agregar las celdas
+        fila.appendChild(crearCelda(contacto.nombre))
+        fila.appendChild(crearCelda(contacto.apellidos))
+        fila.appendChild(crearCelda(contacto.correo))
+        fila.appendChild(crearCelda(contacto.telefono))
+        fila.appendChild(crearCeldaImagen(contacto.imagen))
+        fila.appendChild(crearCeldaBotones(contacto))        
+
+        //Agregar la fila
+        tablaBody.appendChild(fila)
+
+    })
+    return tablaBody
+}
+
+function crearCelda(dato){
+    let celda = document.createElement('td')
+    celda.textContent = dato
+    return celda
+}
+
+function crearCeldaImagen(rutaImagen){
+    let celda = document.createElement('td')
+    let imagen = document.createElement('img')
+    imagen.classList.add('img-fluid', 'rounded', 'img-tabla')
+    imagen.src = rutaImagen
+    celda.appendChild(imagen)
+    
+    return celda
+}
+
+function crearCeldaBotones(contacto){
 
     //Crear celda para botones en cada fila
     let celda = document.createElement('td')
     celda.classList.add('text-center')
-
-    //Crear boton borrar
-    let botonBorrar = document.createElement('button')
-    botonBorrar.onclick = () => borrarContacto(numeroFila)
-    botonBorrar.classList.add('btn', 'btn-danger', 'm-1')
-    //botonBorrar.textContent = 'Borrar'
-    //Icono borrar
-    let iconoBorrar = document.createElement('i')
-    iconoBorrar.classList.add('bi', 'bi-trash')
-    botonBorrar.appendChild(iconoBorrar)
-
-    //Crear boton editar
-    let botonModificar = document.createElement('button')
-    botonModificar.onclick = () => abrirModalEditarContacto(numeroFila, datosContacto)
-    botonModificar.classList.add('btn', 'btn-warning', 'm-1')
-    //botonModificar.textContent = 'Editar'
-    //Icono editar
-    let iconoModificar = document.createElement('i')
-    iconoModificar.classList.add('bi', 'bi-pencil-square')
-    botonModificar.appendChild(iconoModificar)
-
-    //Agregar botones a la celda
-    celda.appendChild(botonBorrar)
-    celda.appendChild(botonModificar)
+    celda.appendChild(crearBotonInfoContacto(contacto))
+    celda.appendChild(crearBotonBorrarContacto(contacto))
+    celda.appendChild(crearBotonModificarContacto(contacto))
 
     return celda
 }

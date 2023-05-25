@@ -43,7 +43,7 @@ function insertarContacto(){
     let contacto = guardarDatosContacto()
     let archivo = document.getElementById('imagen').files[0]
     //Si hay archivo guardado
-    if(archivo) subirImagen(contacto, archivo)
+    if(archivo) subirImagenInsertar(contacto, archivo)
     else{
         google.script.run
         .withSuccessHandler(contactoInsertadoCorrectamente)
@@ -52,7 +52,7 @@ function insertarContacto(){
     }    
 }
 
-function subirImagen(contacto, archivo){
+function subirImagenInsertar(contacto, archivo){
 
     let fileReader = new FileReader()
     fileReader.readAsArrayBuffer(archivo)
@@ -67,6 +67,24 @@ function subirImagen(contacto, archivo){
         .withSuccessHandler(contactoInsertadoCorrectamente)
         .withFailureHandler(contactoInsertadoError)
         .insertarContacto(contacto, imagen)
+    }
+}
+
+function subirImagenModificar(contacto, archivo){
+
+    let fileReader = new FileReader()
+    fileReader.readAsArrayBuffer(archivo)
+    fileReader.onload = function(){
+        let imagen = {
+            nombre: archivo.name,
+            tipo: archivo.type,
+            datos: Array.from(new Int8Array(this.result))
+
+        }
+        google.script.run
+        .withSuccessHandler(contactoModificadoCorrectamente)
+        .withFailureHandler(contactoModificadoError)
+        .modificarContacto(contacto, imagen)
     }
 }
 
@@ -90,15 +108,14 @@ function contactoInsertadoCorrectamente(){
     document.getElementById('correo').value = ""
     //Mostrar notificaciones
     crearNotificacionContacto('Contacto creado correctamente', 'Contacto OK')
-    mostrar()
-    //crearTablaContactos()
+    mostrar()    
 }
 
 function contactoInsertadoError(){
     crearNotificacionError('No se ha podido insertar el contacto', 'Error') 
-    mostrar()
-    //crearTablaContactos()
+    mostrar()    
 }
+
 //MODIFICAR CONTACTO
 function modificarContacto(numeroFila){
 
@@ -106,15 +123,19 @@ function modificarContacto(numeroFila){
     //Cerrar modal
     bootstrap.Modal.getInstance(document.getElementById('crearContactoModal')).hide()
     //obtener nuevos DATOS a partir del formulario
-    let nombre = document.getElementById('nombre').value
-    let apellidos = document.getElementById('apellidos').value
-    let correo = document.getElementById('correo').value
-    let telefono = document.getElementById('telefono').value    
-    crearLoader('divcontactos')
-    google.script.run
+
+    let contacto = guardarDatosContacto()
+    contacto.fila = numeroFila
+
+    let archivo = document.getElementById('imagen').files[0]
+    //Si hay archivo guardado
+    if(archivo) subirImagenModificar(contacto, archivo)
+    else{
+        google.script.run
         .withSuccessHandler(contactoModificadoCorrectamente)
         .withFailureHandler(contactoModificadoError)
-        .modificarContacto(numeroFila, {nombre, apellidos, correo, telefono})
+        .modificarContacto(contacto)
+    }   
 }
 
 function contactoModificadoCorrectamente(){
