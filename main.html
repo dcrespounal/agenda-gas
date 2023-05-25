@@ -1,28 +1,31 @@
 <main>
 
     <div class="d-flex justify-content-center my-3">
-        <!-- Botones superiores-->
+        <!-- BOTONES SUPERIORES-->
         <!-- Boton mostrar vista de contactos tarjetas -->
-        <button type="button" class="btn btn-success m-2" onclick="crearTarjetaContactos()"><i class="bi bi-postcard"></i></button>
+        <button type="button" class="btn btn-success m-2" onclick="crearTarjetaContactos()"><i
+                class="bi bi-postcard"></i></button>
         <!-- Boton cambiar vista de contactos en tabla -->
-        <button type="button" class="btn btn-success m-2" onclick="crearTablaContactos()"><i class="bi bi-table"></i></button>
+        <button type="button" class="btn btn-success m-2" onclick="crearTablaContactos()"><i
+                class="bi bi-table"></i></button>
         <!-- Boton activa modal -->
-        <button type="button" class="btn btn-primary m-2" onclick="abrirModalCrearContacto()"><i class="bi bi-person-plus"></i></button>
+        <button type="button" class="btn btn-primary m-2" onclick="abrirModalCrearContacto()"><i
+                class="bi bi-person-plus"></i></button>
         <!-- Boton traer contactos API externa -->
         <button type="button" class="btn btn-info m-2" onclick="importarContactos()">+ 5 Contactos</button>
     </div>
-    <!-- Tabla de contactos -->
+    <!-- CONTACTOS -->
     <div class="container col-12 d-flex justify-content-center" id="divcontactos">
 
     </div>
-    <!-- Notificaciones -->
+    <!-- NOTIFICACIONES -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        
+
         <div class="toast-container position-static" id="contenedorNotificaciones">
-        <!-- Aquí van las notificaciones -->
+            <!-- Aquí van las notificaciones -->
         </div>
-            <!-- Toast -->
-            <!-- <div id="notificacion" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive"
+        <!-- Toast -->
+        <!-- <div id="notificacion" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive"
                 aria-atomic="true">
                 <div class="toast-header p-0">
                     <div class="icono-notificacion"><i id="iconoNotificacion"></i></div>
@@ -32,9 +35,9 @@
                 <div class="toast-body" id="mensajeNotificacion">
                 </div>
             </div> -->
-    </div>    
+    </div>
 
-    <!-- Modal -->
+    <!-- MODAL -->
     <div class="modal fade" id="crearContactoModal" tabindex="-1" aria-labelledby="tituloCrearContactoModal"
         aria-hidden="true">
         <div class="modal-lg modal-dialog">
@@ -50,15 +53,17 @@
                             <div class="col-6 d-flex flex-column">
                                 <div class="mb-2">
                                     <label for="nombre" class="form-label">Nombre del contacto</label>
-                                    <input type="text" class="form-control" name="nombre" id="nombre"  pattern="[\D]*" title="No puede contener números" required>
+                                    <input type="text" class="form-control" name="nombre" id="nombre" pattern="[\D]*"
+                                        title="No puede contener números" required>
                                 </div>
                                 <div class="mb-2">
                                     <label for="apellido" class="form-label">Apellido del contacto</label>
-                                    <input type="text" class="form-control" name="apellidos" id="apellidos" pattern="[\D]*" title="No puede contener números" required>
+                                    <input type="text" class="form-control" name="apellidos" id="apellidos"
+                                        pattern="[\D]*" title="No puede contener números" required>
                                 </div>
                                 <div class="input-group mb-2">
                                     <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
-                                    <input type="email" class="form-control" name="correo" id="correo" required>                                    
+                                    <input type="email" class="form-control" name="correo" id="correo" required>
                                 </div>
                                 <div class="input-group mb-2">
                                     <span class="input-group-text"><i class="bi bi-telephone-fill"></i></span>
@@ -70,19 +75,18 @@
                                 </div>
                             </div>
                             <!-- Parte Derecha formulario -->
-                            <div class="col-6 d-flex justify-content-center align-items-center p-0">
-                                <img class="img-fluid img-form" id="imgForm" alt="Imagen de contacto" >
-
-                                
+                            <div class="col-6 d-flex justify-content-center align-items-center p-0 position-relative">
+                                <img class="img-fluid img-form" id="imgForm" alt="Imagen de contacto">
+                                <div class="caja-icono-form container-fluid" id="cajaIconoForm">
+                                    <i class="icono-img-form bi bi-cloud-plus"></i>
+                                </div>
                             </div>
-
-
-                                                  
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button id="botonCrearModificar" type="submit" class="btn btn-success">Crear contacto</button>                        
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button id="botonCrearModificar" type="submit" class="btn btn-success">Crear
+                                contacto</button>
+                        </div>
                 </form>
             </div>
         </div>

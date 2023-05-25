@@ -43,6 +43,32 @@ document.getElementById('imagen').addEventListener("change", function(){
     document.getElementById('imgForm').src = URL.createObjectURL(this.files[0])
 })
 
+//Dragover
+document.getElementById('imgForm').addEventListener('dragover', function(event){
+    event.preventDefault()
+    this.style.filter = 'opacity(0%)'
+    document.getElementById('cajaIconoForm').style.display = 'flex'
+})
+
+//Dragleave
+document.getElementById('imgForm').addEventListener('dragleave', function(event){
+    this.style.filter = 'opacity(100%)'
+    document.getElementById('cajaIconoForm').style.display = 'none'
+})
+
+//Drop
+document.getElementById('imgForm').addEventListener('drop', function(event){
+    event.preventDefault()
+    let ficheros = event.dataTransfer.files
+    //Pasar archivos al input
+    document.getElementById('imagen').files = ficheros
+    //Crear URL para mostrar la imagen
+    document.getElementById('imgForm').src = URL.createObjectURL(ficheros[0])
+    //Mostrar imagen y quitar zona de carga
+    this.style.filter = 'opacity(100%)'
+    document.getElementById('cajaIconoForm').style.display = 'none'
+})
+
 
 
 function mostrar(){
