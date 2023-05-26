@@ -179,6 +179,69 @@
         transform: scale(1.2);
     }
 
+    /* ESTILOS ADICIONALES */
+
+    .caja-contacto, .caja-contacto img{
+        position: relative;
+        border: .3rem solid var(--color-gris-oscuro);
+        border-radius: .3rem;
+        background-color: var(--color-gris-oscuro);
+    }
+
+    .datos-contacto{
+        position: absolute;
+        padding: .5rem;
+        background: black;
+        width: 100%;
+        height: 6rem;
+        bottom: 0;
+    }
+
+    .datos-contacto h3{
+        color: white;
+        font-size: 1.5rem;
+    }
+
+    .datos-contacto span{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: .4rem;
+    }
+
+    .caja-contacto img{
+        z-index: 2;
+        transition: all .5s;
+        width: 16rem;
+        height: 16rem;
+        object-fit: cover;
+    }
+
+    .caja-contacto:hover img{
+        transform: translateY(-6rem);
+    }
+
+    .plantillaLoader{
+        width: 16rem;
+        height: 16rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border: 1px solid red;
+        border-radius: .5rem;
+        background-color: white;
+    }
+
+    .boton-caja{
+        transform: scale(1);
+        transition: all .4s;
+    }
+
+    .boton-caja:hover{
+        transform: translateY(10%);
+    }
+
     .icono-img-form{
         font-size: 10rem;
         color: green;
