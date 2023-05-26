@@ -84,25 +84,62 @@
                             </div> -->
                             <!-- Versión con Lottie -->
                             <div class="div-img-form">
-                                <i class="icono-form bi bi-question-circle-fill btn" data-bs-toggle="popover" data-bs-content="Se recomienda imagenes cuadradas para un mejor visualización
+                                <i class="icono-form bi bi-question-circle-fill btn" data-bs-toggle="popover"
+                                    data-bs-content="Se recomienda imagenes cuadradas para un mejor visualización
                                 resolución recomendada: 320x320" data-bs-trigger="hover"></i>
                                 <img class="img-fluid img-form" id="imgForm" alt="Imagen de contacto">
                                 <div class="lottie-form" id="lottieForm">
-                                    <lottie-player src="https://assets1.lottiefiles.com/private_files/lf30_dmituz7c.json" speed="1" loop autoplay></lottie-player>
+                                    <lottie-player
+                                        src="https://assets1.lottiefiles.com/private_files/lf30_dmituz7c.json" speed="1"
+                                        loop autoplay></lottie-player>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button id="botonCrearModificar" type="submit" class="btn btn-success">Crear
-                                contacto</button>
+                            <button id="botonCrearModificar" type="submit" class="btn btn-success">Crear contacto</button>
                         </div>
                 </form>
             </div>
         </div>
     </div>
+    </div>
 
-
-
+    <!-- MODAL INFO CONTACTO -->
+    <div class="modal fade" id="infoContactoModal" tabindex="-1" aria-labelledby="tituloCrearContactoModal"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="d-flex justify-content-center align-items-center flex-column">
+                        <!-- Parte superior -->
+                        <div class="m-3">
+                            <h3 class="text-uppercase text-center fw-bold mb-2" id="nombreInfoContacto"></h3>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-envelope-fill me-2"></i>
+                                <h5 class="me-4" id="correoInfoContacto"></h5>
+                                <i id="copiarCorreo" class="bi bi-clipboard boton-copiar"
+                                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Copiar correo"></i>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-telephone-fill me-2"></i>
+                                <h5 class="me-4" id="telfInfoContacto"></h5>
+                                <i id="copiarTelf" class="bi bi-clipboard boton-copiar"
+                                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-title="Copiar telefono"></i>
+                            </div>
+                        </div>
+                        <!-- Parte inferior -->
+                        <div class="m-3">
+                            <img id="imgInfoContacto" class="border border-4 border-dark rounded"
+                                alt="Vista previa de la imagen del contacto">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>

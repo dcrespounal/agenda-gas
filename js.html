@@ -14,28 +14,55 @@ const LOTTIE_ERROR = 'https://assets10.lottiefiles.com/packages/lf20_e1pmabgl.js
 const LOTTIE_PELIGRO = 'https://assets7.lottiefiles.com/packages/lf20_tk0uford.json'
 const LOTTIE_LOADER_NUBE = 'https://assets2.lottiefiles.com/packages/lf20_x62chJ.json'
 
-function limpiar(){
-
-eliminarTabla()
-eliminarTarjetas()
-//crearLoader('divcontactos')
-crearLoaderLottie('divcontactos', LOTTIE_LOADER_NUBE)
-}
-
 //Boton subir
 window.addEventListener('scroll', function(){
 
-if(this.window.scrollY > 500){
-    document.getElementById('botonSubir').style.transform = "scale(1)"
-}
-if(this.window.scrollY < 500){
-    document.getElementById('botonSubir').style.transform = "scale(0)"
-}
+    if(this.window.scrollY > 500){
+        document.getElementById('botonSubir').style.transform = "scale(1)"
+    }
+    if(this.window.scrollY < 500){
+        document.getElementById('botonSubir').style.transform = "scale(0)"
+    }
 })
-function subirArriba() {
 
-    document.body.scrollTop = 0
-    document.documentElement.scrollTop = 0
+//Copiar correo
+document.getElementById('copiarCorreo').addEventListener('click', function(event){    
+    copiarContenido(this, 'correoInfoContacto')
+    
+})
+//Copiar telefono
+document.getElementById('copiarTelf').addEventListener('click', function(event){    
+    copiarContenido(this, 'telfInfoContacto')
+    
+})
+
+function copiarContenido(icono, id){
+
+    let texto = document.getElementById(id).textContent
+    navigator.clipboard.writeText(texto)
+    .then(() => {
+        icono.classList.remove('bi-clipboard')
+        icono.classList.add('bi-check-lg')
+        icono.title = 'Copiado'        
+        bootstrap.Tooltip.getOrCreateInstance(icono).show()
+        restaurarIcono(icono)        
+    })
+    .catch(() => {
+        icono.title = 'Error al copiar'
+        bootstrap.Tooltip.getOrCreateInstance(icono).show()
+        restaurarIcono(icono) 
+    })
+}
+
+function restaurarIcono(icono){
+
+    setTimeout(function(){
+            icono.classList.remove('bi-check-lg')
+            icono.classList.add('bi-clipboard')
+            icono.title = ''
+            bootstrap.Tooltip.getInstance(icono).dispose()            
+
+        }, 2000)        
 }
 
 //Cargar Imagen
@@ -49,7 +76,6 @@ document.getElementById('imgForm').addEventListener('dragover', function(event){
     this.style.filter = 'opacity(0%)'
     //document.getElementById('cajaIconoForm').style.display = 'flex'
     document.getElementById('lottieForm').style.display = 'flex'
-
 })
 
 //Dragleave
@@ -71,10 +97,21 @@ document.getElementById('imgForm').addEventListener('drop', function(event){
     this.style.filter = 'opacity(100%)'
     //document.getElementById('cajaIconoForm').style.display = 'none'
     document.getElementById('lottieForm').style.display = 'none'
-
 })
 
+function limpiar(){
 
+    eliminarTabla()
+    eliminarTarjetas()
+    //crearLoader('divcontactos')
+    crearLoaderLottie('divcontactos', LOTTIE_LOADER_NUBE)
+}
+
+function subirArriba() {
+
+    document.body.scrollTop = 0
+    document.documentElement.scrollTop = 0
+}
 
 function mostrar(){
 
@@ -127,7 +164,6 @@ function subirImagenModificar(contacto, archivo){
             nombre: archivo.name,
             tipo: archivo.type,
             datos: Array.from(new Int8Array(this.result))
-
         }
         google.script.run
         .withSuccessHandler(contactoModificadoCorrectamente)
@@ -147,8 +183,6 @@ function guardarDatosContacto(){
     }
     return contacto
 }
-
-
 
 function contactoInsertadoCorrectamente(){
     //Vaciar datos input
@@ -199,6 +233,7 @@ function contactoModificadoError(){
     mostrar()
     //crearTablaContactos()
 }
+
 //BORRAR CONTACTO
 function borrarContacto(numeroFila){
 
@@ -255,5 +290,9 @@ function mostrarInformacionAdicionalContacto(tarjeta){
 //Habilitar popovers
 const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
 const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
+//Habilitar tooltips
+//const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+//const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 
 </script>
