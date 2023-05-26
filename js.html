@@ -47,13 +47,16 @@ document.getElementById('imagen').addEventListener("change", function(){
 document.getElementById('imgForm').addEventListener('dragover', function(event){
     event.preventDefault()
     this.style.filter = 'opacity(0%)'
-    document.getElementById('cajaIconoForm').style.display = 'flex'
+    //document.getElementById('cajaIconoForm').style.display = 'flex'
+    document.getElementById('lottieForm').style.display = 'flex'
+
 })
 
 //Dragleave
 document.getElementById('imgForm').addEventListener('dragleave', function(event){
     this.style.filter = 'opacity(100%)'
-    document.getElementById('cajaIconoForm').style.display = 'none'
+    //document.getElementById('cajaIconoForm').style.display = 'none'
+    document.getElementById('lottieForm').style.display = 'none'    
 })
 
 //Drop
@@ -66,7 +69,9 @@ document.getElementById('imgForm').addEventListener('drop', function(event){
     document.getElementById('imgForm').src = URL.createObjectURL(ficheros[0])
     //Mostrar imagen y quitar zona de carga
     this.style.filter = 'opacity(100%)'
-    document.getElementById('cajaIconoForm').style.display = 'none'
+    //document.getElementById('cajaIconoForm').style.display = 'none'
+    document.getElementById('lottieForm').style.display = 'none'
+
 })
 
 
@@ -245,7 +250,10 @@ function contactosImportadosError(){
 
 function mostrarInformacionAdicionalContacto(tarjeta){
 
-
 }
+
+//Habilitar popovers
+const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 
 </script>
